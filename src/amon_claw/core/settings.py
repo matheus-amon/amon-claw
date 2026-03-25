@@ -9,11 +9,18 @@ class DatabaseConfig(BaseModel):
     url: str = Field(default='sqlite:///./real_estate.db')
 
 
-class LLMConfig(BaseModel):
-    api_key: SecretStr = Field(default=SecretStr(''))
-    model_id: str = Field(default='nvidia/nemotron-3-super-120b-a12b:free')
+class LLMConfig(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_prefix='LLM_',
+        env_file='.env',
+        case_sensitive=False,
+        extra='ignore',
+    )
 
-    @field_validator('api_key')
+    openrouter_api_key: SecretStr = Field(default=SecretStr(''))
+    openrouter_model_id: str = Field(default='nvidia/nemotron-3-super-120b-a12b:free')
+
+    @field_validator('openrouter_api_key')
     @classmethod
     def not_empty(cls, v: SecretStr) -> SecretStr:
         if not v.get_secret_value():
@@ -26,7 +33,7 @@ class Settings(BaseSettings):
         env_file='.env',
         env_file_encoding='utf-8',
         str_to_lower=True,
-        env_nested_delimiter='__',
+        extra='allow',
     )
 
     environment: Literal['prod', 'dev'] = Field(default='dev')
@@ -35,5 +42,5 @@ class Settings(BaseSettings):
 
 
 @lru_cache(maxsize=1)
-def get_settings() -> Settings:
+def settings_singleton() -> Settings:
     return Settings()
