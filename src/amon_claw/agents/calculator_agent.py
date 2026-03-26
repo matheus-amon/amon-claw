@@ -1,17 +1,12 @@
-from pydantic import BaseModel, SecretStr
+from pydantic import SecretStr
 from pydantic_ai import Agent
 from pydantic_ai.models.openrouter import OpenRouterModel
 from pydantic_ai.providers.openrouter import OpenRouterProvider
 
-from amon_claw.core.settings import settings_singleton
+from amon_claw.core.settings import Settings, settings_singleton
+from amon_claw.models.response import MathResult
 
-
-class MathResult(BaseModel):
-    result: float
-    explication: str
-
-
-settings = settings_singleton()
+settings: Settings = settings_singleton()
 
 
 def model_factory(
