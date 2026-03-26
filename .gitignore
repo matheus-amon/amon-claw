@@ -1,5 +1,7 @@
 # Project stuffs
 AGENTS.md
+grafo.png
+*.sqlite
 
 # Secrets
 .env
