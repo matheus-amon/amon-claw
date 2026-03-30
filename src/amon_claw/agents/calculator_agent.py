@@ -4,7 +4,7 @@ from pydantic_ai.models.openrouter import OpenRouterModel
 from pydantic_ai.providers.openrouter import OpenRouterProvider
 
 from amon_claw.core.settings import Settings, settings_singleton
-from amon_claw.models.response import MathResult
+from amon_claw.models.response import AgentOutput
 
 settings: Settings = settings_singleton()
 
@@ -19,4 +19,9 @@ def model_factory(
 
 def agent_factory() -> Agent:
     model = model_factory()
-    return Agent(model, output_type=MathResult)  # pyright: ignore[reportReturnType]
+    prompt = 'Você é meu assistente pessoal'
+    return Agent(
+        model,
+        system_prompt=prompt,
+        output_type=AgentOutput,
+    )  # pyright: ignore[reportReturnType]
