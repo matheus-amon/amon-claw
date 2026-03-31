@@ -8,3 +8,31 @@ Stack:
 
 Integrações:
 - Inicialmente apenas Openrouter como provedor de API de LLM mas restringido apenas para modelos free, o foco é ter SML disponiveis para fazer tarefas determinísticas e não dar proatividade pros agentes.
+
+Current graph:
+
+![grafo.png](grafo.png "Grafo Atual")
+
+Target graph:
+```mermaid
+graph LR
+    A[__start__] --> B(input_node)
+    B --> C(call_llm_node)
+    C --> B
+    C --> D[__end__]
+```
+
+---
+
+Aplicação: 
+```mermaid
+flowchart TD
+    A[Route] --> B(Handler)
+    B --> C(Service)
+    C --> D(UseCase)
+    C --> E(Repository)
+    E --> F(Models)
+    D --> G(Checkpointer)
+    F --> H@{ shape: cyl, label: "Database" }
+    G --> H
+```
