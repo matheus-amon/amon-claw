@@ -4,8 +4,8 @@ from typing import Literal
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, START, StateGraph
 
-from amon_claw.nodes import call_llm_node, input_node
-from amon_claw.state import AmonClawState
+from amon_claw.application.use_cases.nodes import call_llm_node, input_node
+from amon_claw.application.use_cases.state import AmonClawState
 
 
 def build_graph() -> StateGraph:
