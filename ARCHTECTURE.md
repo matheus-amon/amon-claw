@@ -1,43 +1,34 @@
-# Arquitetura técnica
+# Arquitetura Técnica - Amon Claw (SDR & Scheduler)
 
-## Estrutura de pastas
+## Visão Geral
+O **Amon Claw** é um sistema multi-agêntico de SDR e Agendamento focado em pequenos negócios. Ele utiliza LangGraph para orquestração de diálogos e Pydantic AI para execução de ferramentas determinísticas.
 
-### Clean Archtecture 
+## Estrutura de Pastas (Clean Architecture)
 
-1. **Handlers** -> Valida no presentation.
-2. **Routes** -> Rotas FastAPI.
-3. **Repository** -> Persistência.
-4. **UseCase** -> Grafos langgraph e Micro-Agents pydantic ai.
-5. **DTO** -> Contrato entre classes.
-6. **Services** -> Faz o trabalho pesado.
-7. **Schemas** -> Validação de requests, serialização de response, serialização de output dos micro-agents pydantic ai.
-8. **Models** -> Tabelas Banco de dados.
-9. **Settings** -> Config aninhada com pydantic
+1. **Presentation (API/Handlers)** -> Pontos de entrada (FastAPI) para Webhooks (WhatsApp/Evolution).
+2. **Application (Use Cases)** -> Orquestração do LangGraph, lógica de agendamento e fluxos de SDR.
+3. **Domain (Entities/Interfaces)** -> Definição de regras de negócio, entidades (Tenant, Appointment, Professional) e contratos.
+4. **Infrastructure** -> Implementações de persistência (MongoDB), integração com APIs externas (Google Calendar, Evolution API) e serviços AWS.
 
-### Mapa Mental
+## Decisões Arquiteturais Principais
+
+- **Multi-Tenancy:** Estratégia de *Shared Database/Shared Schema* usando MongoDB.
+- **Orquestração:** LangGraph para gerenciar o estado da conversa entre nós de processamento.
+- **Integração de Agenda:** Sincronização bidirecional com Google Calendar API.
+
+## Mapa Mental do Fluxo
 ```mermaid
 flowchart TD
-    A[Route] --> B(Handler)
-    B --> C(Service)
-    C --> D(UseCase)
-    C --> E(Repository)
-    E --> F(Models)
-    D --> G(Checkpointer)
-    F --> H@{ shape: cyl, label: "Database" }
-    G --> H
+    WA[WhatsApp Event] --> API[FastAPI Route]
+    API --> UC[LangGraph Use Case]
+    UC --> LLM[Pydantic AI Agent]
+    LLM --> Tool[Calendar/DB Tools]
+    Tool --> DB[(MongoDB)]
+    Tool --> Google[Google Calendar]
 ```
 
----
-
-## Infraestrutura
-
-### AWS SAM - serveless first
-
-- Lambda Function
-- ECR
-- API Gateway
-- Dynamo DB
-- OpenSearch (para RAG)
-- Bedrock
-- IAM
-- Secret Manager
+## Infraestrutura (AWS Serverless)
+- **AWS Lambda:** Execução da lógica de negócio.
+- **ECR:** Armazenamento das imagens Docker para as Lambdas.
+- **DynamoDB/MongoDB:** Persistência de dados e estado.
+- **Secret Manager:** Gestão de chaves de API.

@@ -5,7 +5,7 @@ description = "Meu Simples OpenClaw, feito apenas para me atender"
 authors = [
     { email = "matheus.amon@outlook.com" }
 ]
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "beanie>=2.1.0",
     "fastapi[standard]>=0.135.3",
@@ -30,7 +30,7 @@ pythonpath = ["src"]
 asyncio_mode = "auto"
 
 [tool.ruff]
-target-version = "py314"
+target-version = "py312"
 line-length = 90
 
 [tool.ruff.lint]
