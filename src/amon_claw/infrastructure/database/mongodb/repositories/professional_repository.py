@@ -1,6 +1,9 @@
 from amon_claw.domain.entities.professional import Professional
-from amon_claw.infrastructure.database.mongodb.models.professional import ProfessionalDocument
+from amon_claw.infrastructure.database.mongodb.models.professional import (
+    ProfessionalDocument,
+)
 from amon_claw.infrastructure.database.mongodb.repositories.base import MongoRepository
+
 
 class ProfessionalRepository(MongoRepository[Professional, ProfessionalDocument]):
     """

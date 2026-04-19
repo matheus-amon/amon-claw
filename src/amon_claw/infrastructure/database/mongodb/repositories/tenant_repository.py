@@ -1,7 +1,8 @@
-from typing import Optional
+
 from amon_claw.domain.entities.tenant import Tenant
 from amon_claw.infrastructure.database.mongodb.models.tenant import TenantDocument
 from amon_claw.infrastructure.database.mongodb.repositories.base import MongoRepository
+
 
 class TenantRepository(MongoRepository[Tenant, TenantDocument]):
     """
@@ -10,7 +11,7 @@ class TenantRepository(MongoRepository[Tenant, TenantDocument]):
     def __init__(self):
         super().__init__(TenantDocument, Tenant)
 
-    async def get_by_phone(self, phone: str) -> Optional[Tenant]:
+    async def get_by_phone(self, phone: str) -> Tenant | None:
         """
         Retrieves a tenant by its unique phone number.
         """

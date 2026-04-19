@@ -1,6 +1,9 @@
 from amon_claw.domain.entities.appointment import Appointment
-from amon_claw.infrastructure.database.mongodb.models.appointment import AppointmentDocument
+from amon_claw.infrastructure.database.mongodb.models.appointment import (
+    AppointmentDocument,
+)
 from amon_claw.infrastructure.database.mongodb.repositories.base import MongoRepository
+
 
 class AppointmentRepository(MongoRepository[Appointment, AppointmentDocument]):
     """

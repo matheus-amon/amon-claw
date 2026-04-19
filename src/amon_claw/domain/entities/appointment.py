@@ -1,8 +1,9 @@
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 from uuid import UUID, uuid4
+
 from pydantic import BaseModel, Field
+
 
 class AppointmentStatus(str, Enum):
     PENDENTE = "PENDENTE"
@@ -19,4 +20,4 @@ class Appointment(BaseModel):
     start_time: datetime
     end_time: datetime
     status: AppointmentStatus = AppointmentStatus.PENDENTE
-    external_calendar_id: Optional[str] = None
+    external_calendar_id: str | None = None

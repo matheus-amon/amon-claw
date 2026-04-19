@@ -1,7 +1,10 @@
 from uuid import UUID, uuid4
-from pydantic import Field
+
 from beanie import Document
+from pydantic import Field
+
 from amon_claw.domain.entities.professional import Professional
+
 
 class ProfessionalDocument(Document, Professional):
     """

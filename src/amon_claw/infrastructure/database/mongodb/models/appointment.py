@@ -1,8 +1,11 @@
 from uuid import UUID, uuid4
-from pydantic import Field
-from pymongo import IndexModel, ASCENDING
+
 from beanie import Document
+from pydantic import Field
+from pymongo import ASCENDING, IndexModel
+
 from amon_claw.domain.entities.appointment import Appointment
+
 
 class AppointmentDocument(Document, Appointment):
     """

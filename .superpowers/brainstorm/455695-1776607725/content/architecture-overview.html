@@ -1,0 +1,45 @@
+<h2>Arquitetura Conceitual: Amon Claw</h2>
+<p class="subtitle">Orquestração com LangGraph + Execução com Pydantic AI</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">Fluxo Admin (Dono)</div>
+    <div class="mockup-body">
+      <div class="mock-nav">Configurações | Serviços | Horários</div>
+      <div class="section">
+        <p><strong>Objetivo:</strong> Configurar as regras do SDR.</p>
+        <ul>
+          <li>Definição de Personas</li>
+          <li>Tabela de Preços</li>
+          <li>Gestão de Agenda</li>
+        </ul>
+      </div>
+      <div class="placeholder" style="height: 100px; display: flex; align-items: center; justify-content: center;">
+        Agente Consultor (Pydantic AI)
+      </div>
+    </div>
+  </div>
+  
+  <div class="mockup">
+    <div class="mockup-header">Fluxo Usuário (Cliente)</div>
+    <div class="mockup-body">
+      <div class="mock-nav">Chat WhatsApp / Web</div>
+      <div class="section">
+        <p><strong>Objetivo:</strong> Realizar o agendamento final.</p>
+        <ul>
+          <li>Consulta de Horários</li>
+          <li>Reserva de Vaga</li>
+          <li>Lembretes Automáticos</li>
+        </ul>
+      </div>
+      <div class="placeholder" style="height: 100px; display: flex; align-items: center; justify-content: center; background-color: #e3f2fd;">
+        Agente Agendador (Pydantic AI)
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+  <h3>Camada de Orquestração (LangGraph)</h3>
+  <p>O <strong>LangGraph</strong> gerencia o estado global e decide qual Agente invocar com base na intenção do usuário.</p>
+</div>

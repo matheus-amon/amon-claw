@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar, Optional
+from typing import Generic, TypeVar
 from uuid import UUID
 
 T = TypeVar("T")
@@ -14,7 +14,7 @@ class BaseRepository(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    async def get_by_id(self, id: UUID) -> Optional[T]:
+    async def get_by_id(self, id: UUID) -> T | None:
         """
         Retrieves a domain entity by its unique ID.
         """

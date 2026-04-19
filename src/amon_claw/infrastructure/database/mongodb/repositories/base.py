@@ -1,7 +1,9 @@
-from typing import Generic, Optional, Type, TypeVar
+from typing import Generic, TypeVar
 from uuid import UUID
+
 from beanie import Document
 from pydantic import BaseModel
+
 from amon_claw.application.interfaces.repositories.base import BaseRepository
 
 EntityT = TypeVar("EntityT", bound=BaseModel)
@@ -12,7 +14,7 @@ class MongoRepository(BaseRepository[EntityT], Generic[EntityT, DocumentT]):
     Generic MongoDB repository implementation using Beanie.
     Handles mapping between domain entities (Pydantic models) and Beanie documents.
     """
-    def __init__(self, document_model: Type[DocumentT], entity_class: Type[EntityT]):
+    def __init__(self, document_model: type[DocumentT], entity_class: type[EntityT]):
         self.document_model = document_model
         self.entity_class = entity_class
 
@@ -28,7 +30,7 @@ class MongoRepository(BaseRepository[EntityT], Generic[EntityT, DocumentT]):
 
         # Try to find existing document to update, or create new
         doc = await self.document_model.get(entity_id)
-        
+
         if doc:
             # Update existing document with new entity data
             # Use model_dump to update fields
@@ -40,10 +42,10 @@ class MongoRepository(BaseRepository[EntityT], Generic[EntityT, DocumentT]):
             # Create new document
             doc = self.document_model(**entity.model_dump())
             await doc.insert()
-            
+
         return self.entity_class(**doc.model_dump())
 
-    async def get_by_id(self, id: UUID) -> Optional[EntityT]:
+    async def get_by_id(self, id: UUID) -> EntityT | None:
         """
         Retrieves a domain entity by its unique ID.
         """

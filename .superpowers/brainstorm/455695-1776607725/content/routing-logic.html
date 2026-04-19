@@ -1,0 +1,41 @@
+<h2>Roteamento de Fluxo: Amon Claw</h2>
+<p class="subtitle">Como o sistema diferencia o Dono (Admin) do Cliente (Usuário Final)</p>
+
+<div class="mockup">
+  <div class="mockup-header">Fluxo de Mensagem (Único Canal)</div>
+  <div class="mockup-body">
+    <div class="section" style="display: flex; flex-direction: column; align-items: center;">
+      <div class="placeholder" style="width: 200px; padding: 10px; border: 2px solid #333;">Início: Recebe Mensagem</div>
+      <div style="font-size: 20px;">↓</div>
+      
+      <div class="split" style="width: 100%;">
+        <div class="card" style="border: 2px dashed #ff9800; padding: 10px;">
+          <h4>Comando /admin detectado?</h4>
+          <p>Verifica Hash / 2FA / Permissão</p>
+        </div>
+      </div>
+      
+      <div style="display: flex; width: 100%; justify-content: space-around; margin-top: 10px;">
+        <div style="text-align: center;">
+          <div style="font-size: 20px;">[Sim]</div>
+          <div class="placeholder" style="background-color: #fff3e0; width: 150px; padding: 15px;"><strong>Grafo ADMIN</strong><br>Configura SDR</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 20px;">[Não]</div>
+          <div class="placeholder" style="background-color: #e3f2fd; width: 150px; padding: 15px;"><strong>Grafo USUÁRIO</strong><br>Agendamentos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pros-cons">
+  <div class="pros">
+    <h4>Vantagens do Plug & Play</h4>
+    <ul>
+      <li>Interface única: sem app extra pro dono.</li>
+      <li>Ativação rápida via comando.</li>
+      <li>Vibe de "Funcionário Virtual".</li>
+    </ul>
+  </div>
+</div>
