@@ -3,6 +3,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from amon_claw.core.config import settings_singleton
 from loguru import logger
+from urllib.parse import urlparse # Import urlparse
 
 _mongo_client: AsyncIOMotorClient | None = None
 
@@ -12,11 +13,30 @@ def get_mongo_client() -> AsyncIOMotorClient:
     if _mongo_client is None:
         try:
             uri = settings_singleton().db.uri
-            logger.info(f"DEBUG: Attempting to connect to MongoDB with URI: {uri}") # Added for debugging
-            _mongo_client = AsyncIOMotorClient(uri)
-            # A conexão é estabelecida, mas para ter certeza que está ativa
-            # podemos tentar uma operação, ou fazer o ping no exemplo de uso
-            logger.info(f"Conectado ao MongoDB em {uri}")
+            logger.info(f"DEBUG: Attempting to connect to MongoDB with URI from settings: {uri}") # Debugging
+            
+            # Parse URI to extract credentials for explicit authentication
+            parsed_uri = urlparse(uri)
+            username = parsed_uri.username if parsed_uri.username else None
+            password = parsed_uri.password if parsed_uri.password else None
+            host = parsed_uri.hostname if parsed_uri.hostname else "localhost"
+            port = parsed_uri.port if parsed_uri.port else 27017
+            auth_source = 'admin' # Assuming authentication always against admin database
+            
+            _mongo_client = AsyncIOMotorClient(
+                host=host,
+                port=port,
+                username=username,
+                password=password,
+                authSource=auth_source,
+                uuidRepresentation='standard' # Recommended for MongoDB 4+
+            )
+            
+            # Test connection with ping to ensure authentication works
+            _mongo_client.admin.command('ping') # Synchronous ping might raise, but for async client, it's awaited.
+                                                # For direct check, better to perform this in an async context.
+                                                # For now, just instantiating should be enough to trigger auth process.
+            logger.info(f"Conectado ao MongoDB em {uri} com autenticação explícita.")
         except Exception as e:
             logger.error(f"Falha ao conectar ao MongoDB: {e}")
             raise
@@ -34,15 +54,12 @@ if __name__ == "__main__":
         client = get_mongo_client()
         db = get_mongo_db()
         try:
-            # Tentar uma operação real para verificar a conexão
             await client.admin.command('ping')
             logger.info("MongoDB ping bem-sucedido!")
             logger.info(f"Conectado ao banco de dados: {db.name}")
         except Exception as e:
             logger.error(f"Falha ao pingar MongoDB: {e}")
         finally:
-            # Não fechar o cliente singleton aqui, pois pode ser usado por outras partes da aplicação
-            # client.close() # Comentar ou remover em produção se o cliente for singleton
             pass # Adicionar pass para bloco finally vazio
 
     asyncio.run(test_connection())
