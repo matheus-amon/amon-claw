@@ -27,7 +27,8 @@ async def mongo_client_fixture():
     db_name_from_uri = parsed_uri.path.strip('/') if parsed_uri.path else settings.db.db_name
 
     # Create a new AsyncIOMotorClient for the fixture, explicitly authenticating
-    client = AsyncIOMotorClient(
+    # This client will be yielded and also used to perform setup/teardown actions.
+    fixture_client = AsyncIOMotorClient(
         host=host,
         port=port,
         username=username,
@@ -38,14 +39,10 @@ async def mongo_client_fixture():
     
     # Attempt to drop the database, handling potential authentication context
     try:
-        # Ping the admin database to check connectivity and auth as superuser context
-        await client.admin.command('ping')
-        print("DEBUG: Ping successful with explicit authentication in fixture.")
-
-        # Drop the specific database for the test
-        # Use client.drop_database directly, as it handles authentication context
-        await client.drop_database(db_name_from_uri) # Use db_name parsed from URI for consistency
-        print(f"DEBUG: Successfully dropped database: {db_name_from_uri}")
+        await fixture_client.admin.command('ping')
+        print("DEBUG: Ping successful with explicit authentication in fixture setup.")
+        await fixture_client.drop_database(db_name_from_uri)
+        print(f"DEBUG: Successfully dropped database: {db_name_from_uri} during setup.")
 
     except pymongo.errors.OperationFailure as e:
         print(f"DEBUG: OperationFailure during setup (dropDatabase): {e}")
@@ -54,15 +51,17 @@ async def mongo_client_fixture():
         print(f"DEBUG: Other error during setup (dropDatabase): {e}")
         raise
 
-    yield client # Yield the client for tests to use
+    yield fixture_client # Yield the fixture_client for tests to use
 
     # Cleanup after test
     try:
-        await client.drop_database(db_name_from_uri)
-        print(f"DEBUG: Successfully dropped database during teardown: {db_name_from_uri}")
+        await fixture_client.drop_database(db_name_from_uri)
+        print(f"DEBUG: Successfully dropped database during teardown: {db_name_from_uri}.")
     except Exception as e:
         print(f"DEBUG: Error during teardown: {e}")
-    client.close() # Close the client opened by the fixture
+    finally:
+        fixture_client.close() # Close the client created by the fixture
+        _mongo_client = None # Ensure the singleton is cleared for the next test function
 
 @pytest.mark.asyncio
 async def test_get_mongo_client(mongo_client: AsyncIOMotorClient):
@@ -74,14 +73,14 @@ async def test_get_mongo_client(mongo_client: AsyncIOMotorClient):
 @pytest.mark.asyncio
 async def test_get_mongo_db(mongo_client: AsyncIOMotorClient):
     """Testa se o banco de dados MongoDB é obtido corretamente."""
-    db = get_mongo_db() # This will use the singleton client, which might be new or reused.
+    db = get_mongo_db() # This will use the singleton client, which will be a fresh one.
     assert db.name == settings_singleton().db.db_name
     assert hasattr(db, 'command')
 
 @pytest.mark.asyncio
 async def test_save_appointment_to_db(mongo_client: AsyncIOMotorClient):
     """Testa a funcionalidade de salvar agendamentos no MongoDB."""
-    db = get_mongo_db()
+    db = get_mongo_db() # This will use the singleton client
     appointments_collection = db.appointments
 
     test_appointment = {
