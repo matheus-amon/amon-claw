@@ -2,7 +2,7 @@ import pytest
 from motor.motor_asyncio import AsyncIOMotorClient
 from amon_claw.infrastructure.database.mongodb.client import get_mongo_client, get_mongo_db, _mongo_client # Import _mongo_client for reset
 from amon_claw.application.use_cases.appointment_persistence import save_appointment_to_db
-from amon_claw.core.config import settings_singleton
+from amon_claw.core.config import settings_singleton # Import the singleton function
 import asyncio
 from bson.objectid import ObjectId
 import pymongo # Import pymongo for exceptions
@@ -14,6 +14,9 @@ async def mongo_client_fixture():
     # Reset the global singleton client used by get_mongo_client/get_mongo_db for test isolation
     global _mongo_client
     _mongo_client = None
+
+    # Clear the cache for settings_singleton to ensure .env is re-read
+    settings_singleton.cache_clear() # CLEAR THE CACHE!
 
     settings = settings_singleton()
     print(f"DEBUG: MongoDB URI used in fixture: {settings.db.uri}") # Keep for debugging
@@ -62,6 +65,7 @@ async def mongo_client_fixture():
     finally:
         fixture_client.close() # Close the client created by the fixture
         _mongo_client = None # Ensure the singleton is cleared for the next test function
+        settings_singleton.cache_clear() # CLEAR THE CACHE for the next test!
 
 @pytest.mark.asyncio
 async def test_get_mongo_client(mongo_client: AsyncIOMotorClient):
