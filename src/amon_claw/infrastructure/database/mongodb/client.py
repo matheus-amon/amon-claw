@@ -32,11 +32,8 @@ def get_mongo_client() -> AsyncIOMotorClient:
                 uuidRepresentation='standard' # Recommended for MongoDB 4+
             )
             
-            # Test connection with ping to ensure authentication works
-            _mongo_client.admin.command('ping') # Synchronous ping might raise, but for async client, it's awaited.
-                                                # For direct check, better to perform this in an async context.
-                                                # For now, just instantiating should be enough to trigger auth process.
-            logger.info(f"Conectado ao MongoDB em {uri} com autenticação explícita.")
+            # Removed: _mongo_client.admin.command('ping') as it might interfere with event loop management in tests.
+            logger.info(f"Conectado ao MongoDB em {uri} com autenticação explícita (sem ping inicial).")
         except Exception as e:
             logger.error(f"Falha ao conectar ao MongoDB: {e}")
             raise
@@ -54,7 +51,7 @@ if __name__ == "__main__":
         client = get_mongo_client()
         db = get_mongo_db()
         try:
-            await client.admin.command('ping')
+            await client.admin.command('ping') # Keep ping in example as it's a direct run
             logger.info("MongoDB ping bem-sucedido!")
             logger.info(f"Conectado ao banco de dados: {db.name}")
         except Exception as e:
