@@ -30,3 +30,10 @@ async def intent_security_node(state: Dict[str, Any]) -> Dict[str, Any]:
         "security_flag": "safe",
         "intent_type": "neutral"
     }
+
+async def off_topic_responder_node(state: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Handles off-topic queries by incrementing the off-topic counter.
+    """
+    count = state.get("off_topic_count", 0)
+    return {"off_topic_count": count + 1}
