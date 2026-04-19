@@ -126,6 +126,23 @@ async def test_tenant_repository_delete():
     assert await repo.get_by_id(tenant.id) is None
 
 @pytest.mark.asyncio
+async def test_tenant_repository_admin_hash_persistence():
+    repo = TenantRepository()
+    
+    tenant = Tenant(
+        name="Hash Tenant",
+        phone="5511888888888",
+        business_hours={},
+        admin_hash="secret_hash_789"
+    )
+    
+    await repo.save(tenant)
+    
+    retrieved = await repo.get_by_id(tenant.id)
+    assert retrieved is not None
+    assert retrieved.admin_hash == "secret_hash_789"
+
+@pytest.mark.asyncio
 async def test_tenant_repository_get_by_phone_not_found():
     repo = TenantRepository()
     retrieved_tenant = await repo.get_by_phone("non-existent")

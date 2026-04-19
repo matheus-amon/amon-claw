@@ -30,6 +30,7 @@ class Tenant(BaseModel):
     id: UUID = Field(default_factory=uuid4)
     name: str
     phone: str
+    admin_hash: str = Field(default="12345")
     business_hours: dict[str, BusinessHours]
     settings: TenantSettings = Field(default_factory=TenantSettings)
     messaging_config: TenantMessagingConfig = Field(default_factory=TenantMessagingConfig)
