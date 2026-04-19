@@ -10,4 +10,5 @@ class DatabaseConfig(BaseSettings):
         extra='ignore',
     )
 
-    url: str = Field(default='sqlite:///./real_estate.db')
+    uri: str = Field(default='mongodb://localhost:27017/amon_claw')
+    db_name: str = Field(default='amon_claw')
