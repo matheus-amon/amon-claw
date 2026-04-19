@@ -16,3 +16,7 @@ class SDRState(TypedDict):
     flow_type: Literal["admin", "user", "unknown"]
     is_authenticated: bool
     extracted_info: dict[str, Any]
+    next_node: str | None
+    intent_type: str
+    security_flag: str
+    off_topic_count: int
