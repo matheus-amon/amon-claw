@@ -9,6 +9,9 @@ async def user_node(state: SDRState):
     Node for the user flow.
     Calls the SchedulingAgent.
     """
+    if not state.get("messages"):
+        return {"messages": [("assistant", "Olá! Como posso ajudar você hoje?")]}
+    
     agent = SchedulingAgent()
     # No futuro injetaremos deps aqui
     response = await agent.run(deps=None, message=state["messages"][-1].content)
@@ -30,7 +33,6 @@ def router(state: SDRState) -> str:
 workflow = StateGraph(SDRState)
 
 # Add nodes
-workflow.add_node("router_node", lambda x: x)  # Entry placeholder
 workflow.add_node("user_node", user_node)
 
 # Set conditional entry point
