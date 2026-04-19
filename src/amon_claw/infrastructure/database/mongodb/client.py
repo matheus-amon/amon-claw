@@ -41,5 +41,6 @@ if __name__ == "__main__":
         finally:
             # Não fechar o cliente singleton aqui, pois pode ser usado por outras partes da aplicação
             # client.close() # Comentar ou remover em produção se o cliente for singleton
+            pass # Adicionar pass para bloco finally vazio
 
     asyncio.run(test_connection())
