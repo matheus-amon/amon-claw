@@ -64,6 +64,7 @@ nav:
           - Base Agent Interface: superpowers/specs/2026-04-20-base-agent-interface-design.md
           - Chat Interface: superpowers/specs/2026-04-20-chat-interface-integration.md
       - Implementation Plans:
+          - Agent Tools & Calendar: superpowers/plans/2026-04-20-agent-tools-and-calendar.md
           - Persistence Layer: superpowers/plans/2026-04-19-persistence-layer-beanie.md
           - Base SDR Graph: superpowers/plans/2026-04-20-implement-base-sdr-graph.md
           - SDR Orchestration V2: superpowers/plans/2026-04-19-sdr-orchestration-langgraph-v2.md
@@ -81,7 +82,9 @@ nav:
       - Terraform: infra/003-terraform-structure.md
       - Persistence Guide: infra/004-persistence-guide.md
   - 📜 Changelog:
+      - '2026-04-20 (Chat Integration)': logs/2026-04-20-chat-interface-integration.md
       - '2026-04-19 (Agent Orchestration)': logs/2026-04-19-agent-orchestration-implementation.md
       - '2026-04-19 (SDR Logic)': logs/2026-04-19-sdr-orchestration-langgraph.md
       - '2026-04-19 (Persistence)': logs/2026-04-19-persistence-layer-beanie.md
       - '2026-04-18 (Project Reset)': logs/2026-04-18-project-reset-and-domain-entities.md
+ies.md
