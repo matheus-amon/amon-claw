@@ -1,8 +1,8 @@
 import uuid
 from typing import Literal
 
-from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, START, StateGraph
+from amon_claw.infrastructure.database.redis.client import get_redis_saver # Novo import para RedisSaver
 
 from amon_claw.application.use_cases.nodes import call_llm_node, input_node
 from amon_claw.application.use_cases.state import AmonClawState
@@ -35,18 +35,18 @@ def build_graph() -> StateGraph:
 def main():
     graph = build_graph()
 
-    with SqliteSaver.from_conn_string('amonclaw_checkpoints.sqlite') as checkpointer:
-        app = graph.compile(checkpointer=checkpointer)
-        app.invoke(
-            {
-                'thread_id': None,
-                'user_id': 'amon',
-                'messages': [],
-                'ai_calls': 0,
-                'last_result': 0.0,
-            },
-            config={'configurable': {'thread_id': uuid.uuid8()}},
-        )
+    checkpointer = get_redis_saver() # Usar RedisSaver
+    app = graph.compile(checkpointer=checkpointer)
+    app.invoke(
+        {
+            'thread_id': str(uuid.uuid8()), # Fornecer um UUID como string para thread_id
+            'user_id': 'amon',
+            'messages': [],
+            'ai_calls': 0,
+            'last_result': 0.0,
+        },
+        config={'configurable': {'thread_id': str(uuid.uuid8())}},
+    )
 
 
 if __name__ == '__main__':
