@@ -1,11 +1,47 @@
 
 import pytest
 
-from amon_claw.domain.entities.tenant import BusinessHours, Tenant, TenantSettings
+from amon_claw.domain.entities.tenant import (
+    BusinessHours,
+    MessagingProvider,
+    Tenant,
+    TenantMessagingConfig,
+    TenantSettings,
+)
 from amon_claw.infrastructure.database.mongodb.repositories.tenant_repository import (
     TenantRepository,
 )
 
+
+@pytest.mark.asyncio
+async def test_tenant_repository_save_with_messaging_config():
+    repo = TenantRepository()
+
+    messaging_config = TenantMessagingConfig(
+        provider=MessagingProvider.evolution,
+        evolution_api_url="http://localhost:8080",
+        evolution_api_key="secret",
+        evolution_instance_name="test-instance"
+    )
+
+    tenant = Tenant(
+        name="Messaging Tenant",
+        phone="5511999999999",
+        business_hours={},
+        messaging_config=messaging_config
+    )
+
+    saved_tenant = await repo.save(tenant)
+
+    assert saved_tenant.messaging_config.provider == MessagingProvider.evolution
+    assert saved_tenant.messaging_config.evolution_api_url == "http://localhost:8080"
+    assert saved_tenant.messaging_config.evolution_api_key == "secret"
+
+    # Retrieve from DB
+    retrieved = await repo.get_by_id(tenant.id)
+    assert retrieved is not None
+    assert retrieved.messaging_config.provider == MessagingProvider.evolution
+    assert retrieved.messaging_config.evolution_instance_name == "test-instance"
 
 @pytest.mark.asyncio
 async def test_tenant_repository_save():
