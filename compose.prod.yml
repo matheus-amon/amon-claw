@@ -1,4 +1,23 @@
 services:
+  app:
+    build: .
+    container_name: amon_claw_app
+    ports:
+      - "8080:8080"
+    environment:
+      - API__DEBUG=True
+      - MONGODB__URI=mongodb://admin:password@mongodb:27017/amon_claw?authSource=admin
+      - REDIS_URL=redis://:your_secure_password@redis:6379/0
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-test_key}
+    depends_on:
+      - mongodb
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -36,21 +55,8 @@ services:
       - redis-data:/data
     command: redis-server --appendonly yes --requirepass your_secure_password
 
-  redis-insight:
-    image: redis/redisinsight:latest
-    container_name: redis-insight
-    ports:
-      - "5540:5540"
-    volumes:
-      - redis-insight-data:/data
-    depends_on:
-      - redis
-    restart: unless-stopped
-
 volumes:
   mongo-data:
     driver: local
   redis-data:
-    driver: local
-  redis-insight-data:
     driver: local

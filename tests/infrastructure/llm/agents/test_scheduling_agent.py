@@ -1,9 +1,11 @@
+import os
+from unittest.mock import patch
 import pytest
 from pydantic_ai.models.test import TestModel
 from amon_claw.infrastructure.llm.agents.scheduling_agent import SchedulingAgent
 from pydantic_ai import Agent
 
-
+@patch.dict(os.environ, {"GOOGLE_API_KEY": "test_key"})
 def test_scheduling_agent_instantiation():
     agent = SchedulingAgent()
     assert isinstance(agent.agent, Agent)
@@ -16,8 +18,8 @@ def test_scheduling_agent_instantiation():
     assert 'check_availability' in tool_names
     assert 'book_appointment' in tool_names
 
-
 @pytest.mark.asyncio
+@patch.dict(os.environ, {"GOOGLE_API_KEY": "test_key"})
 async def test_scheduling_agent_run():
     agent = SchedulingAgent()
     # Usamos TestModel para evitar chamadas reais e não chamamos as ferramentas

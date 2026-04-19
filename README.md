@@ -36,3 +36,27 @@ flowchart TD
     F --> H@{ shape: cyl, label: "Database" }
     G --> H
 ```
+
+---
+
+## Como Rodar Localmente (Developer Experience)
+
+O projeto suporta dois fluxos de execução para rodar localmente, focados em agilidade e demonstrações.
+
+### 1. Workflow Dev (Desenvolvimento Diário)
+Para quem vai codar e precisa de hot-reload instantâneo:
+- Suba apenas os bancos de dados/infra:
+  ```bash
+  docker compose up -d
+  ```
+- Rode a API localmente via `uv` (a aplicação lerá o seu `.env`):
+  ```bash
+  uv run uvicorn amon_claw.presentation.api.app:app --reload --port 8080
+  ```
+
+### 2. Workflow PoC (Produção Local / "Blackbox")
+Para apresentar o sistema ou testar a imagem final exatamente como irá rodar na AWS Lambda:
+- Suba todos os serviços (Bancos + App):
+  ```bash
+  docker compose -f compose.prod.yml up --build -d
+  ```

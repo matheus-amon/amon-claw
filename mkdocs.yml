@@ -57,6 +57,7 @@ nav:
           - 003 Infrastructure: adr/003-infrastructure-as-code-terraform.md
   - 🛠️ Development:
       - Specs & Designs:
+          - Agent Tools Integration: superpowers/specs/2026-04-20-agent-tools-integration-design.md
           - Persistence Layer: superpowers/specs/2026-04-18-persistence-layer-beanie.md
           - LangGraph State: superpowers/specs/2026-04-20-sdr-langgraph-state.md
           - MkDocs Setup: superpowers/specs/2026-04-19-mkdocs-setup-design.md
@@ -64,6 +65,7 @@ nav:
           - Base Agent Interface: superpowers/specs/2026-04-20-base-agent-interface-design.md
           - Chat Interface: superpowers/specs/2026-04-20-chat-interface-integration.md
       - Implementation Plans:
+          - Agent Tools Integration: superpowers/plans/2026-04-20-agent-tools-integration.md
           - Agent Tools & Calendar: superpowers/plans/2026-04-20-agent-tools-and-calendar.md
           - Persistence Layer: superpowers/plans/2026-04-19-persistence-layer-beanie.md
           - Base SDR Graph: superpowers/plans/2026-04-20-implement-base-sdr-graph.md
