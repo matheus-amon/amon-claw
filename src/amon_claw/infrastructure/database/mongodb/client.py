@@ -11,10 +11,12 @@ def get_mongo_client() -> AsyncIOMotorClient:
     global _mongo_client
     if _mongo_client is None:
         try:
-            _mongo_client = AsyncIOMotorClient(settings_singleton().db.uri)
+            uri = settings_singleton().db.uri
+            logger.info(f"DEBUG: Attempting to connect to MongoDB with URI: {uri}") # Added for debugging
+            _mongo_client = AsyncIOMotorClient(uri)
             # A conexão é estabelecida, mas para ter certeza que está ativa
             # podemos tentar uma operação, ou fazer o ping no exemplo de uso
-            logger.info(f"Conectado ao MongoDB em {settings_singleton().db.uri}")
+            logger.info(f"Conectado ao MongoDB em {uri}")
         except Exception as e:
             logger.error(f"Falha ao conectar ao MongoDB: {e}")
             raise
