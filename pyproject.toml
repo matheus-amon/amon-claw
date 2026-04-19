@@ -17,6 +17,7 @@ dependencies = [
     "motor>=3.7.1",
     "pydantic-ai-slim[google,openrouter]>=1.70.0",
     "pydantic-settings>=2.13.1",
+    "pymongo>=4.6.2", # Adicionado para operações de baixo nível com MongoDB
 ]
 dev-dependencies = [
     "pytest>=8.0.0",
