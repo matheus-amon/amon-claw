@@ -1,0 +1,41 @@
+<h2>Admin Flow: Routing & Interaction</h2>
+<div class="section">
+    <p>O fluxo de administração será ativado via WhatsApp usando o comando <code>/admin &lt;hash&gt;</code>. Isso garante que apenas o dono do negócio acesse as configurações.</p>
+</div>
+
+<div class="mockup">
+    <div class="mockup-header">Arquitetura de Roteamento (LangGraph)</div>
+    <div class="mockup-body">
+        <pre>
+[WhatsApp Message] 
+      |
+      v
+[Router Node] ---- (Texto comum) ----> [SDR/Scheduling Graph]
+      |
+      +--- (/admin &lt;hash&gt;) ----> [Validate Hash] ----> [Admin Graph]
+                                          |
+                                          +--- [Admin Tools]
+                                                 |-- update_hours()
+                                                 |-- upsert_service()
+                                                 |-- list_catalog()
+        </pre>
+    </div>
+</div>
+
+<h3>Fluxo de Experiência (UX)</h3>
+<div class="options">
+  <div class="option" data-choice="accept" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Aprovar Design</h3>
+      <p>A arquitetura e o fluxo de conversa estão corretos. Pode seguir para a spec.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="change" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Solicitar Mudanças</h3>
+      <p>Quero ajustar algo no roteamento ou nas ferramentas.</p>
+    </div>
+  </div>
+</div>

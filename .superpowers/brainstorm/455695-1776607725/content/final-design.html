@@ -1,0 +1,36 @@
+<h2>Design Consolidado: Amon Claw</h2>
+<p class="subtitle">Visão PO & Arquiteta</p>
+
+<div class="cards">
+  <!-- Arquitetura -->
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+      <h3>1. O Cérebro (Core)</h3>
+      <p><strong>LangGraph:</strong> Orquestrador de estado e fluxo de conversa.</p>
+      <p><strong>Pydantic AI:</strong> Agentes especialistas (Agendador, Configurador) que executam com determinismo (temperatura 0).</p>
+      <p><strong>Clean Arch:</strong> O grafo vive na camada de <code>Application</code>, isolado da <code>Presentation</code> (WhatsApp) e <code>Infrastructure</code> (DB).</p>
+    </div>
+  </div>
+
+  <!-- Fluxos -->
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+      <h3>2. Separação de Fluxos</h3>
+      <p><strong>Fluxo Admin:</strong> Ativado via <code>/admin <hash></code>. Permite configurar o SDR como um funcionário virtual.</p>
+      <p><strong>Fluxo Usuário:</strong> O fluxo padrão de agendamento de serviços.</p>
+    </div>
+  </div>
+
+  <!-- Dados e Métricas -->
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+      <h3>3. Persistência e Inteligência</h3>
+      <p><strong>Checkpointer:</strong> Memória de curto prazo nativa do LangGraph para continuidade da conversa.</p>
+      <p><strong>MongoDB (Beanie):</strong> Memória de longo prazo e métricas (Conversão, Serviços, Horários de Pico).</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 20px;">
+  <p><strong>Próximo Passo:</strong> Vou documentar isso formalmente no <code>docs/superpowers/specs/</code> para podermos seguir para o plano de implementação.</p>
+</div>

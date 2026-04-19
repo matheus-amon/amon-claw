@@ -37,3 +37,20 @@ async def off_topic_responder_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     count = state.get("off_topic_count", 0)
     return {"off_topic_count": count + 1}
+
+async def security_action_node(state: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Handles identified security threats by sending alerts and preparing a defensive response.
+    """
+    from amon_claw.infrastructure.notifications.alerts import send_security_alert
+    
+    await send_security_alert(state)
+    
+    return {
+        "messages": state.get("messages", []) + [
+            {
+                "role": "assistant",
+                "content": "I apologize, but I cannot fulfill this request due to security policy violations."
+            }
+        ]
+    }

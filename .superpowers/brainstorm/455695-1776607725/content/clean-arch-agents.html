@@ -1,0 +1,55 @@
+<h2>Amon Claw: Clean Architecture + Agents</h2>
+<p class="subtitle">Onde o "Cérebro" (Graph) se encaixa no sistema</p>
+
+<div class="mockup">
+  <div class="mockup-header">Camadas do Sistema (O Cebolão)</div>
+  <div class="mockup-body">
+    <div style="display: flex; justify-content: space-around; align-items: flex-start;">
+      
+      <!-- Presentation -->
+      <div class="card" style="width: 30%; border-color: #4caf50;">
+        <div class="label" style="color: #4caf50;">Presentation</div>
+        <p><strong>API / WhatsApp</strong></p>
+        <p style="font-size: 0.8em;">Recebe o texto bruto e o ID do usuário.</p>
+        <div style="text-align: center; font-size: 20px;">↘</div>
+      </div>
+
+      <!-- Application (Brain Interface) -->
+      <div class="card" style="width: 30%; border-color: #2196f3; background-color: #e3f2fd;">
+        <div class="label" style="color: #2196f3;">Application (Use Case)</div>
+        <p><strong>Interface: <code>IBrain</code></strong></p>
+        <div style="border: 1px dashed #2196f3; padding: 5px; font-size: 0.8em; font-family: monospace;">
+          handle_message(uid, msg) -> resp
+        </div>
+        <p style="font-size: 0.8em; margin-top: 10px;"><strong>Impl: <code>LangGraphBrain</code></strong></p>
+      </div>
+
+      <!-- Infrastructure -->
+      <div class="card" style="width: 30%; border-color: #f44336;">
+        <div class="label" style="color: #f44336;">Infrastructure / Persistence</div>
+        <p><strong>MongoDB / Tools</strong></p>
+        <p style="font-size: 0.8em;">Persistência de domínio (Agendamentos, Clientes).</p>
+        <div style="text-align: center; font-size: 20px;">↙</div>
+      </div>
+      
+    </div>
+
+    <div style="margin-top: 20px; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+      <h4>O Fluxo da Dependência:</h4>
+      <ol style="font-size: 0.9em;">
+        <li><strong>Presentation</strong> chama a <code>IBrain</code> (não sabe que existe LangGraph).</li>
+        <li><strong>LangGraph</strong> (dentro da Application) orquestra os <strong>Agentes Pydantic AI</strong>.</li>
+        <li><strong>Agentes</strong> usam <code>Tools</code> que chamam interfaces de <strong>Repositories</strong> (Abstração da Persistence).</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Minha Opinião Técnica:</h3>
+  <p>Você não está viajando! É o jeito mais sólido de fazer. O segredo está em duas interfaces:</p>
+  <ul>
+    <li><strong>Interface de Entrada (IBrain):</strong> Isola a apresentação da complexidade do grafo.</li>
+    <li><strong>Interface de Saída (Dependencies):</strong> O Pydantic AI recebe os Repositories via injeção de dependência (<code>deps</code>), assim o agente nunca fala com o MongoDB direto, mas sim com uma abstração.</li>
+  </ul>
+</div>

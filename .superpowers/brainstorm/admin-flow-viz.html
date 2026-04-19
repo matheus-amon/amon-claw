@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #1e1e1e; color: #fff; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .card { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        h2 { color: #4facfe; border-bottom: 1px solid #444; padding-bottom: 10px; }
+        .mermaid { background: white; padding: 20px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>Admin Flow: Routing & Interaction</h2>
+            <div class="mermaid">
+                graph TD
+                    Start((Inicio)) --> Router{Router Node}
+                    Router -- "/admin <hash>" --> Auth[Validate Hash & Tenant]
+                    Router -- "Texto Comum" --> SDR[SDR/Scheduling Graph]
+                    
+                    Auth -- Invalido --> Error[Mensagem de Erro]
+                    Auth -- Valido --> AdminGraph[Admin Graph]
+                    
+                    AdminGraph --> ToolExec{Admin Tools}
+                    ToolExec --> BH[Update Business Hours]
+                    ToolExec --> PS[Upsert Product/Service]
+                    ToolExec --> LC[List Catalog]
+                    
+                    BH --> DB[(MongoDB)]
+                    PS --> DB
+                    LC --> DB
+                    
+                    DB --> Response[Confirmacao p/ WhatsApp]
+                    Response --> End((Fim))
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>UX Blueprint (WhatsApp)</h2>
+            <div style="background: #075e54; padding: 15px; border-radius: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                <div style="background: #dcf8c6; color: #000; padding: 8px; border-radius: 5px; margin-bottom: 10px; align-self: flex-end; max-width: 80%;">
+                    <b>Dono:</b> /admin 12345
+                </div>
+                <div style="background: #fff; color: #000; padding: 8px; border-radius: 5px; margin-bottom: 10px; align-self: flex-start; max-width: 80%;">
+                    <b>Amon Claw:</b> 🔐 Modo Admin ativado para 'Barbearia do Amon'. O que deseja configurar?
+                </div>
+                <div style="background: #dcf8c6; color: #000; padding: 8px; border-radius: 5px; margin-bottom: 10px; align-self: flex-end; max-width: 80%;">
+                    <b>Dono:</b> Quero que a gente feche as 17h nas sextas e adiciona 'Corte Kids' por R$35 (20 min).
+                </div>
+                <div style="background: #fff; color: #000; padding: 8px; border-radius: 5px; margin-bottom: 10px; align-self: flex-start; max-width: 80%;">
+                    <b>Amon Claw:</b> Feito! ✅<br>- Sextas: Fechamento alterado para 17:00.<br>- Novo serviço: Corte Kids (R$35, 20min) adicionado.
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>mermaid.initialize({startOnLoad:true, theme:'default'});</script>
+</body>
+</html>

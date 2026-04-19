@@ -1,0 +1,84 @@
+<style>
+  .node {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-family: sans-serif;
+    font-size: 14px;
+    text-align: center;
+    width: 200px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  }
+  .node.new {
+    border-color: #4CAF50;
+    background-color: #e8f5e9;
+    font-weight: bold;
+  }
+  .node.existing {
+    border-color: #2196F3;
+    background-color: #e3f2fd;
+  }
+  .arrow {
+    font-size: 24px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    line-height: 0.5;
+  }
+  .label {
+    font-size: 12px;
+    color: #555;
+    margin-top: -5px;
+    margin-bottom: 5px;
+  }
+  .graph-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .decision {
+    font-style: italic;
+    color: #888;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 13px;
+  }
+</style>
+
+<h2>Fluxo do Grafo: Visão Geral e Arquitetura</h2>
+<p class="subtitle">Diagrama mostrando a integração dos nós de Intenção e Segurança.</p>
+
+<div class="graph-container">
+  <div class="node existing">EntryPointNode</div>
+  <div class="arrow">↓</div>
+  <div class="node new">IntentSecurityNode</div>
+  <div class="decision">
+    Classifica Intenção / Detecta Ameaça?<br>
+    (Saída baseada em SDRState)
+  </div>
+  <div style="display: flex; justify-content: space-around; width: 100%;">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div class="arrow">↓</div>
+      <div class="label">Intenção Agendamento OK</div>
+      <div class="node existing">SchedulingCoreNode</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div class="arrow">↘</div>
+      <div class="label">Off-Topic / Conversa Fiada</div>
+      <div class="node new">OffTopicResponderNode</div>
+      <div class="arrow">↓</div>
+      <div class="label"> (Após N tentativas) </div>
+      <div class="arrow">↓</div>
+      <div class="label"> ou (Retorna ao IntentSecurityNode) </div>
+      <div class="node new">SecurityActionNode</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div class="arrow">→</div>
+      <div class="label">Prompt Injection / Ataque</div>
+      <div class="node new">SecurityActionNode</div>
+    </div>
+  </div>
+</div>

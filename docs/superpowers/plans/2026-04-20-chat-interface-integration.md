@@ -30,18 +30,18 @@ Ensure we didn't break anything.
 
 ---
 
-### Task 2: Messaging Infrastructure (Clients)
+### Task 2: Messaging Infrastructure (Clients) [COMPLETED]
 
 **Files:**
 - Create: `src/amon_claw/infrastructure/llm/tools/messaging_client.py`
 - Test: `tests/infrastructure/llm/tools/test_messaging_clients.py`
 
-- [ ] **Step 1: Create BaseMessagingClient and implementations**
+- [x] **Step 1: Create BaseMessagingClient and implementations**
 Define the ABC and the Twilio/Evolution clients.
 
-- [ ] **Step 2: Add factory**
+- [x] **Step 2: Add factory**
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ---
 
