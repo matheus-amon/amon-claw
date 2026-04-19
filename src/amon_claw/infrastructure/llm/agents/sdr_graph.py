@@ -10,6 +10,11 @@ from amon_claw.infrastructure.database.mongodb.repositories.service_repository i
 from amon_claw.infrastructure.database.mongodb.repositories.professional_repository import ProfessionalRepository
 from amon_claw.infrastructure.database.mongodb.repositories.appointment_repository import AppointmentRepository
 from amon_claw.infrastructure.llm.adapters.dummy_calendar import DummyCalendarAdapter
+from amon_claw.infrastructure.llm.agents.nodes.security import (
+    intent_security_node,
+    off_topic_responder_node,
+    security_action_node,
+)
 
 
 async def user_node(state: SDRState):
@@ -41,13 +46,12 @@ async def admin_node(state: SDRState):
     Node for the admin flow.
     Calls the AdminAgent with injected dependencies.
     """
-    # For now, if router sent here, we assume it's an admin attempt
     last_message = state["messages"][-1].content
     
     agent = AdminAgent()
     deps = AgentDeps(
         tenant_id=state["tenant_id"],
-        customer_id=state["customer_id"], # Admin usually doesn't need this but it's in Deps
+        customer_id=state["customer_id"],
         tenant_repository=TenantRepository(),
         service_repository=ServiceRepository(),
         professional_repository=ProfessionalRepository(),
@@ -62,12 +66,15 @@ async def admin_node(state: SDRState):
         "is_authenticated": True
     }
 
-def router(state: SDRState) -> str:
+def should_continue(state: SDRState) -> str:
     """
-    Decide which flow to follow based on message content.
+    Decide where to route based on security and intent analysis.
     """
-    if not state["messages"]:
-        return "user_flow"
+    if state.get("security_flag") == "potential_injection":
+        return "security_threat"
+    
+    if state.get("intent_type") == "off_topic":
+        return "off_topic"
         
     last_message = state["messages"][-1].content
     
@@ -86,24 +93,39 @@ def router(state: SDRState) -> str:
 workflow = StateGraph(SDRState)
 
 # Add nodes
+workflow.add_node("intent_security", intent_security_node)
+workflow.add_node("security_action", security_action_node)
+workflow.add_node("off_topic_responder", off_topic_responder_node)
 workflow.add_node("user_node", user_node)
 workflow.add_node("admin_node", admin_node)
 
-# Set conditional entry point
-workflow.set_conditional_entry_point(
-    router,
+# Set entry point
+workflow.set_entry_point("intent_security")
+
+# Set conditional edges from intent_security
+workflow.add_conditional_edges(
+    "intent_security",
+    should_continue,
     {
+        "security_threat": "security_action",
+        "off_topic": "off_topic_responder",
         "admin_flow": "admin_node",
         "user_flow": "user_node"
     }
 )
 
-# Define edges
+# Define remaining edges
+workflow.add_edge("security_action", END)
+workflow.add_edge("off_topic_responder", "user_node") # Or END, but user_node can give a generic response
 workflow.add_edge("user_node", END)
-workflow.add_edge("admin_node", END) # Or back to router if we want multi-turn
+workflow.add_edge("admin_node", END)
 
 # Memory for persistence
 memory = MemorySaver()
 
 # Compile the graph
 sdr_assistant = workflow.compile(checkpointer=memory)
+
+# Keep router for backward compatibility or if needed by tests
+def router(state: SDRState) -> str:
+    return should_continue(state)

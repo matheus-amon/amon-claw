@@ -57,6 +57,7 @@ nav:
           - 003 Infrastructure: adr/003-infrastructure-as-code-terraform.md
   - 🛠️ Development:
       - Specs & Designs:
+          - Intent & Security: superpowers/specs/2026-04-20-intent-security-orchestration-design.md
           - Admin Flow: superpowers/specs/2026-04-19-admin-flow-design.md
           - Agent Tools Integration: superpowers/specs/2026-04-20-agent-tools-integration-design.md
           - Persistence Layer: superpowers/specs/2026-04-18-persistence-layer-beanie.md
@@ -66,6 +67,7 @@ nav:
           - Base Agent Interface: superpowers/specs/2026-04-20-base-agent-interface-design.md
           - Chat Interface: superpowers/specs/2026-04-20-chat-interface-integration.md
       - Implementation Plans:
+          - Intent & Security: superpowers/plans/2026-04-20-intent-security-orchestration.md
           - Admin Flow: superpowers/plans/2026-04-19-admin-flow-implementation.md
           - Agent Tools Integration: superpowers/plans/2026-04-20-agent-tools-integration.md
           - Agent Tools & Calendar: superpowers/plans/2026-04-20-agent-tools-and-calendar.md
@@ -86,6 +88,7 @@ nav:
       - Terraform: infra/003-terraform-structure.md
       - Persistence Guide: infra/004-persistence-guide.md
   - 📜 Changelog:
+      - '2026-04-20 (Intent & Security)': logs/2026-04-20-intent-security-orchestration.md
       - '2026-04-20 (Security & Alerts)': logs/2026-04-20-security-action-node-notifications.md
       - '2026-04-20 (Chat Integration)': logs/2026-04-20-chat-interface-integration.md
       - '2026-04-19 (Admin Flow)': logs/2026-04-19-admin-flow-implementation.md

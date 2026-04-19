@@ -26,6 +26,15 @@ async def intent_security_node(state: Dict[str, Any]) -> Dict[str, Any]:
                 "intent_type": "malicious"
             }
     
+    # Simple heuristic for off-topic detection (for testing and basic use cases)
+    off_topic_keywords = ["joke", "weather", "news", "music"]
+    for keyword in off_topic_keywords:
+        if keyword in content:
+            return {
+                "security_flag": "safe",
+                "intent_type": "off_topic"
+            }
+    
     return {
         "security_flag": "safe",
         "intent_type": "neutral"
