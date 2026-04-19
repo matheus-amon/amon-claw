@@ -1,40 +1,21 @@
 import uuid
 import operator
-from typing import Literal, TypedDict, Annotated, List
+from typing import Literal, List
 import asyncio
+from loguru import logger # Add loguru import
 
 from langgraph.graph import END, START, StateGraph
 from amon_claw.infrastructure.database.redis.client import get_redis_saver
-from amon_claw.application.use_cases.appointment_persistence import save_appointment_to_db # Novo import
-from amon_claw.application.use_cases.nodes import call_llm_node, input_node # Existing imports
-# Re-defining AmonClawState for example purposes to include appointment_details
-# In a real scenario, this would be updated in amon_claw/application/use_cases/state.py
-# and imported.
-class AmonClawState(TypedDict):
-    """
-    Representa o estado do agente AmonClaw.
-
-    Atributos:
-        messages: Uma lista de mensagens no histórico da conversa, acumuladas.
-        ai_calls: Contador de chamadas para a LLM.
-        last_result: O último resultado numérico de alguma operação.
-        thread_id: ID da thread para checkpointing.
-        user_id: ID do usuário.
-        appointment_details: Detalhes do agendamento a ser persistido.
-    """
-    messages: Annotated[List[str], operator.add]
-    ai_calls: int
-    last_result: float
-    thread_id: str
-    user_id: str
-    appointment_details: dict # Novo campo para detalhes do agendamento
+from amon_claw.application.use_cases.appointment_persistence import save_appointment_to_db
+from amon_claw.application.use_cases.nodes import call_llm_node, input_node
+from amon_claw.application.use_cases.state import AmonClawState # Import AmonClawState
 
 # Define um nó que simula a decisão de salvar no MongoDB
 async def save_to_mongo_node(state: AmonClawState):
-    print(f"Executando save_to_mongo_node. Estado: {state}") # Usar print para exemplo
+    logger.info(f"Executando save_to_mongo_node. Estado: {state}")
     if state.get("appointment_details"):
         result = await save_appointment_to_db(state["appointment_details"])
-        print(f"Resultado da persistência no MongoDB: {result}") # Usar print para exemplo
+        logger.info(f"Resultado da persistência no MongoDB: {result}")
         return {"messages": [f"Agendamento persistido. Status: {result.get('status')}"]}
     return {"messages": ["Nenhum detalhe de agendamento para persistir."]}
 
@@ -43,11 +24,11 @@ def build_graph() -> StateGraph:
 
     # Redefinir agent_node para incluir lógica de agendamento para o exemplo
     def agent_node(state: AmonClawState):
-        print(f"Executando agent_node com estado: {state}") # Usar print para exemplo
+        logger.info(f"Executando agent_node com estado: {state}")
         current_messages = state.get("messages", [])
         # Simula o agente identificando um agendamento e adicionando detalhes ao estado
         if any("marcar corte" in msg.lower() for msg in current_messages):
-            print("Agente identificou intenção de marcar corte.") # Usar print para exemplo
+            logger.info("Agente identificou intenção de marcar corte.")
             appointment_details = {
                 "service": "Corte de Cabelo",
                 "date": "2026-04-25",
@@ -91,8 +72,8 @@ async def run_app_example():
         'appointment_details': {} # Inicializar o campo
     }
     response = await app.ainvoke(initial_state, config=config)
-    print("Primeira invocação (agendamento):") # Usar print para exemplo
-    print(response) # Usar print para exemplo
+    logger.info("Primeira invocação (agendamento):")
+    logger.info(response)
 
     # Invocação subsequente com o mesmo thread_id deve retomar o estado
     inputs_2 = {
@@ -104,8 +85,8 @@ async def run_app_example():
         'appointment_details': {} # Manter o campo
     }
     response_2 = await app.ainvoke(inputs_2, config=config)
-    print("Segunda invocação (mesmo thread_id):") # Usar print para exemplo
-    print(response_2) # Usar print para exemplo
+    logger.info("Segunda invocação (mesmo thread_id):")
+    logger.info(response_2)
 
 
 if __name__ == "__main__":
