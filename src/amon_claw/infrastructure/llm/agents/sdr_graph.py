@@ -1,3 +1,4 @@
+from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, StateGraph
 
 from amon_claw.infrastructure.llm.agents.scheduling_agent import SchedulingAgent
@@ -47,5 +48,9 @@ workflow.set_conditional_entry_point(
 # Define edges
 workflow.add_edge("user_node", END)
 
+# Memory for persistence
+memory = MemorySaver()
+
 # Compile the graph
-sdr_assistant = workflow.compile()
+sdr_assistant = workflow.compile(checkpointer=memory)
+
