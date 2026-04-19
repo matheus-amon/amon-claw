@@ -1,23 +1,18 @@
 from langgraph.graph import END, StateGraph
 
+from amon_claw.infrastructure.llm.agents.scheduling_agent import SchedulingAgent
 from amon_claw.infrastructure.llm.agents.state import SDRState
 
 
-def greeting(state: SDRState) -> SDRState:
-    """Stub node for greeting."""
-    return state
-
-def collect_info(state: SDRState) -> SDRState:
-    """Stub node for collecting information."""
-    return state
-
-def check_availability(state: SDRState) -> SDRState:
-    """Stub node for checking professional availability."""
-    return state
-
-def finalize_booking(state: SDRState) -> SDRState:
-    """Stub node for finalizing the booking."""
-    return state
+async def user_node(state: SDRState):
+    """
+    Node for the user flow.
+    Calls the SchedulingAgent.
+    """
+    agent = SchedulingAgent()
+    # No futuro injetaremos deps aqui
+    response = await agent.run(deps=None, message=state["messages"][-1].content)
+    return {"messages": [("assistant", response)]}
 
 def router(state: SDRState) -> str:
     """
@@ -35,17 +30,20 @@ def router(state: SDRState) -> str:
 workflow = StateGraph(SDRState)
 
 # Add nodes
-workflow.add_node("greeting", greeting)
-workflow.add_node("collect_info", collect_info)
-workflow.add_node("check_availability", check_availability)
-workflow.add_node("finalize_booking", finalize_booking)
+workflow.add_node("router_node", lambda x: x)  # Entry placeholder
+workflow.add_node("user_node", user_node)
 
-# Set entry point
-workflow.set_entry_point("greeting")
+# Set conditional entry point
+workflow.set_conditional_entry_point(
+    router,
+    {
+        "admin_flow": END,  # To be implemented
+        "user_flow": "user_node"
+    }
+)
 
-# Define edges (simple path for now)
-workflow.add_edge("greeting", "collect_info")
-workflow.add_edge("collect_info", END)
+# Define edges
+workflow.add_edge("user_node", END)
 
 # Compile the graph
 sdr_assistant = workflow.compile()
