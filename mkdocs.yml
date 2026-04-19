@@ -88,6 +88,7 @@ nav:
       - Terraform: infra/003-terraform-structure.md
       - Persistence Guide: infra/004-persistence-guide.md
   - 📜 Changelog:
+      - '2026-04-20 (LangGraph Persistence)': logs/2026-04-20-langgraph-redis-mongodb-persistence.md
       - '2026-04-20 (Intent & Security)': logs/2026-04-20-intent-security-orchestration.md
       - '2026-04-20 (Security & Alerts)': logs/2026-04-20-security-action-node-notifications.md
       - '2026-04-20 (Chat Integration)': logs/2026-04-20-chat-interface-integration.md
