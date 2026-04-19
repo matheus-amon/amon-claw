@@ -19,6 +19,18 @@ def finalize_booking(state: SDRState) -> SDRState:
     """Stub node for finalizing the booking."""
     return state
 
+def router(state: SDRState) -> str:
+    """
+    Decide which flow to follow based on message content.
+    """
+    if not state["messages"]:
+        return "user_flow"
+    
+    last_message = state["messages"][-1].content
+    if isinstance(last_message, str) and last_message.startswith("/admin"):
+        return "admin_flow"
+    return "user_flow"
+
 # Create the graph
 workflow = StateGraph(SDRState)
 

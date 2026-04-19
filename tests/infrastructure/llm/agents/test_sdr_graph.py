@@ -1,8 +1,9 @@
 from uuid import uuid4
 
 import pytest
+from langchain_core.messages import HumanMessage
 
-from amon_claw.infrastructure.llm.agents.sdr_graph import sdr_assistant
+from amon_claw.infrastructure.llm.agents.sdr_graph import router, sdr_assistant
 from amon_claw.infrastructure.llm.agents.state import SDRState
 
 
@@ -17,8 +18,9 @@ async def test_sdr_graph_execution():
         "tenant_id": uuid4(),
         "customer_id": uuid4(),
         "messages": [],
+        "flow_type": "user",
+        "is_authenticated": False,
         "extracted_info": {},
-        "next_node": None
     }
 
     # Run the graph
@@ -26,3 +28,38 @@ async def test_sdr_graph_execution():
 
     assert result["tenant_id"] == initial_state["tenant_id"]
     assert "messages" in result
+
+def test_router_logic():
+    """Test the router logic for admin and user flows."""
+    # Test user flow (default)
+    state_user: SDRState = {
+        "tenant_id": uuid4(),
+        "customer_id": uuid4(),
+        "messages": [HumanMessage(content="Hello")],
+        "flow_type": "user",
+        "is_authenticated": False,
+        "extracted_info": {},
+    }
+    assert router(state_user) == "user_flow"
+
+    # Test admin flow
+    state_admin: SDRState = {
+        "tenant_id": uuid4(),
+        "customer_id": uuid4(),
+        "messages": [HumanMessage(content="/admin login")],
+        "flow_type": "unknown",
+        "is_authenticated": False,
+        "extracted_info": {},
+    }
+    assert router(state_admin) == "admin_flow"
+
+    # Test empty messages
+    state_empty: SDRState = {
+        "tenant_id": uuid4(),
+        "customer_id": uuid4(),
+        "messages": [],
+        "flow_type": "unknown",
+        "is_authenticated": False,
+        "extracted_info": {},
+    }
+    assert router(state_empty) == "user_flow"

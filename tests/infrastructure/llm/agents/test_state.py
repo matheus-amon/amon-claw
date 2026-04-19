@@ -11,7 +11,8 @@ def test_sdr_state_structure():
     assert "customer_id" in hints
     assert "messages" in hints
     assert "extracted_info" in hints
-    assert "next_node" in hints
+    assert "flow_type" in hints
+    assert "is_authenticated" in hints
 
 def test_sdr_state_instantiation():
     state: SDRState = {
@@ -19,7 +20,8 @@ def test_sdr_state_instantiation():
         "customer_id": uuid.uuid4(),
         "messages": [],
         "extracted_info": {"service_id": "123"},
-        "next_node": "greeting"
+        "flow_type": "user",
+        "is_authenticated": False
     }
     assert isinstance(state["tenant_id"], uuid.UUID)
     assert state["extracted_info"]["service_id"] == "123"
