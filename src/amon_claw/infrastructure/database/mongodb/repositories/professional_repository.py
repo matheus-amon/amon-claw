@@ -9,5 +9,6 @@ class ProfessionalRepository(MongoRepository[Professional, ProfessionalDocument]
     """
     MongoDB implementation of a Professional repository.
     """
+
     def __init__(self):
         super().__init__(ProfessionalDocument, Professional)

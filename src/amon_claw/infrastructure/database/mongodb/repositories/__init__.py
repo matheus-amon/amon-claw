@@ -5,9 +5,9 @@ from .service_repository import ServiceRepository
 from .tenant_repository import TenantRepository
 
 __all__ = [
-    "TenantRepository",
-    "ProfessionalRepository",
-    "ServiceRepository",
-    "CustomerRepository",
-    "AppointmentRepository",
+    'TenantRepository',
+    'ProfessionalRepository',
+    'ServiceRepository',
+    'CustomerRepository',
+    'AppointmentRepository',
 ]

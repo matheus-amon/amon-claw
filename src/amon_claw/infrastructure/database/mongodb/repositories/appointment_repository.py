@@ -9,5 +9,6 @@ class AppointmentRepository(MongoRepository[Appointment, AppointmentDocument]):
     """
     MongoDB implementation of an Appointment repository.
     """
+
     def __init__(self):
         super().__init__(AppointmentDocument, Appointment)

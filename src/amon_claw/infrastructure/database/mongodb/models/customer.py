@@ -11,13 +11,11 @@ class CustomerDocument(Document, Customer):
     """
     MongoDB representation of a Customer using Beanie.
     """
-    id: UUID = Field(default_factory=uuid4, alias="_id")
+
+    id: UUID = Field(default_factory=uuid4, alias='_id')
 
     class Settings:
-        name = "customers"
+        name = 'customers'
         indexes = [
-            IndexModel(
-                [("tenant_id", ASCENDING), ("phone", ASCENDING)],
-                unique=True
-            )
+            IndexModel([('tenant_id', ASCENDING), ('phone', ASCENDING)], unique=True)
         ]

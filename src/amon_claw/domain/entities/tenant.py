@@ -1,21 +1,24 @@
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
 
 
-class MessagingProvider(str, Enum):
-    twilio = "twilio"
-    evolution = "evolution"
+class MessagingProvider(StrEnum):
+    twilio = 'twilio'
+    evolution = 'evolution'
+
 
 class BusinessHours(BaseModel):
     open: str
     close: str
 
+
 class TenantSettings(BaseModel):
     human_in_the_loop: bool = False
     buffer_time: int = 15  # em minutos
+
 
 class TenantMessagingConfig(BaseModel):
     provider: MessagingProvider = MessagingProvider.twilio
@@ -26,11 +29,12 @@ class TenantMessagingConfig(BaseModel):
     evolution_api_key: str | None = None
     evolution_instance_name: str | None = None
 
+
 class Tenant(BaseModel):
     id: UUID = Field(default_factory=uuid4)
     name: str
     phone: str
-    admin_hash: str = Field(default="12345")
+    admin_hash: str = Field(default='12345')
     business_hours: dict[str, BusinessHours]
     settings: TenantSettings = Field(default_factory=TenantSettings)
     messaging_config: TenantMessagingConfig = Field(default_factory=TenantMessagingConfig)

@@ -10,8 +10,9 @@ class ServiceDocument(Document, Service):
     """
     MongoDB representation of a Service using Beanie.
     """
-    id: UUID = Field(default_factory=uuid4, alias="_id")
+
+    id: UUID = Field(default_factory=uuid4, alias='_id')
 
     class Settings:
-        name = "services"
-        indexes = ["tenant_id"]
+        name = 'services'
+        indexes = ['tenant_id']

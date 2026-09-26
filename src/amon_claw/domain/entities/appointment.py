@@ -1,15 +1,16 @@
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
 
 
-class AppointmentStatus(str, Enum):
-    PENDENTE = "PENDENTE"
-    CONFIRMADO = "CONFIRMADO"
-    CANCELADO = "CANCELADO"
-    FINALIZADO = "FINALIZADO"
+class AppointmentStatus(StrEnum):
+    PENDENTE = 'PENDENTE'
+    CONFIRMADO = 'CONFIRMADO'
+    CANCELADO = 'CANCELADO'
+    FINALIZADO = 'FINALIZADO'
+
 
 class Appointment(BaseModel):
     id: UUID = Field(default_factory=uuid4)

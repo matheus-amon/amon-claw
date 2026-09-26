@@ -17,9 +17,7 @@ class TwilioMessagingClient(BaseMessagingClient):
     def __init__(self, config: TenantMessagingConfig):
         self.config = config
         self.auth = (config.twilio_account_sid, config.twilio_auth_token)
-        self.base_url = (
-            f'https://api.twilio.com/2010-04-01/Accounts/{config.twilio_account_sid}/Messages.json'
-        )
+        self.base_url = f'https://api.twilio.com/2010-04-01/Accounts/{config.twilio_account_sid}/Messages.json'
 
     async def send_message(self, to: str, content: str) -> dict[str, Any]:
         # Formata os números no padrão whatsapp:+123456789
@@ -45,9 +43,7 @@ class TwilioMessagingClient(BaseMessagingClient):
 class EvolutionMessagingClient(BaseMessagingClient):
     def __init__(self, config: TenantMessagingConfig):
         self.config = config
-        self.base_url = (
-            f'{config.evolution_api_url}/message/sendText/{config.evolution_instance_name}'
-        )
+        self.base_url = f'{config.evolution_api_url}/message/sendText/{config.evolution_instance_name}'
         self.headers = {'apikey': config.evolution_api_key or ''}
 
     async def send_message(self, to: str, content: str) -> dict[str, Any]:

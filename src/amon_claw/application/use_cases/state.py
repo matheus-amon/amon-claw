@@ -1,7 +1,8 @@
 # src/amon_claw/application/use_cases/state.py
 
-from typing import List, TypedDict, Annotated
 import operator
+from typing import Annotated, TypedDict
+
 
 class AmonClawState(TypedDict):
     """
@@ -14,7 +15,8 @@ class AmonClawState(TypedDict):
         thread_id: ID da thread para checkpointing.
         user_id: ID do usuário.
     """
-    messages: Annotated[List[str], operator.add]
+
+    messages: Annotated[list[str], operator.add]
     ai_calls: int
     last_result: float
     thread_id: str

@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar, Any
+from typing import Any
+
 from pydantic_ai import Agent
 
-T = TypeVar("T")
 
-class BaseAgent(ABC, Generic[T]):
+class BaseAgent[T](ABC):
     @property
     @abstractmethod
     def agent(self) -> Agent:

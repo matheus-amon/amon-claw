@@ -9,6 +9,7 @@ class CustomerRepository(MongoRepository[Customer, CustomerDocument]):
     """
     MongoDB implementation of a Customer repository.
     """
+
     def __init__(self):
         super().__init__(CustomerDocument, Customer)
 
@@ -17,8 +18,7 @@ class CustomerRepository(MongoRepository[Customer, CustomerDocument]):
         Retrieves a customer by its unique phone number within a tenant.
         """
         doc = await self.document_model.find_one(
-            CustomerDocument.tenant_id == tenant_id,
-            CustomerDocument.phone == phone
+            CustomerDocument.tenant_id == tenant_id, CustomerDocument.phone == phone
         )
         if doc:
             return self.entity_class(**doc.model_dump())

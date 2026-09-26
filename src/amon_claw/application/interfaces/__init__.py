@@ -1,3 +1,3 @@
 from .brain import IBrain
 
-__all__ = ["IBrain"]
+__all__ = ['IBrain']

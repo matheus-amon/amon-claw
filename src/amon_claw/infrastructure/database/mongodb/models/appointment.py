@@ -11,11 +11,12 @@ class AppointmentDocument(Document, Appointment):
     """
     MongoDB representation of an Appointment using Beanie.
     """
-    id: UUID = Field(default_factory=uuid4, alias="_id")
+
+    id: UUID = Field(default_factory=uuid4, alias='_id')
 
     class Settings:
-        name = "appointments"
+        name = 'appointments'
         indexes = [
-            IndexModel([("tenant_id", ASCENDING), ("start_time", ASCENDING)]),
-            "professional_id"
+            IndexModel([('tenant_id', ASCENDING), ('start_time', ASCENDING)]),
+            'professional_id',
         ]

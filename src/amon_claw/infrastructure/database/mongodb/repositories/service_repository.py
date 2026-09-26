@@ -7,5 +7,6 @@ class ServiceRepository(MongoRepository[Service, ServiceDocument]):
     """
     MongoDB implementation of a Service repository.
     """
+
     def __init__(self):
         super().__init__(ServiceDocument, Service)

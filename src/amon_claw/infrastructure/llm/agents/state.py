@@ -13,7 +13,7 @@ class SDRState(TypedDict):
     tenant_id: UUID
     customer_id: UUID
     messages: Annotated[list[BaseMessage], add_messages]
-    flow_type: Literal["admin", "user", "unknown"]
+    flow_type: Literal['admin', 'user', 'unknown']
     is_authenticated: bool
     extracted_info: dict[str, Any]
     next_node: str | None

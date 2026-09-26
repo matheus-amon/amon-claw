@@ -21,6 +21,7 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
+          python-version: "3.12"
 
       - name: Install dependencies
         run: uv sync --locked --all-extras
@@ -50,7 +51,9 @@ jobs:
           --health-retries 10
 
       redis:
-        image: redis:7-alpine
+        # Redis Stack is required: langgraph's RedisSaver persists checkpoints
+        # through RedisVL, which needs the search module for vector sets.
+        image: redis/redis-stack-server:latest
         ports:
           - 6379:6379
         options: >-
@@ -65,6 +68,8 @@ jobs:
       REDIS_HOST: localhost
       REDIS_PORT: "6379"
       ENVIRONMENT: dev
+      # Validated as non-empty by LLMConfig; never used - the suite mocks the LLM.
+      LLM_OPENROUTER_API_KEY: ci-dummy-key
 
     steps:
       - uses: actions/checkout@v5
@@ -73,6 +78,7 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
+          python-version: "3.12"
 
       - name: Install dependencies
         run: uv sync --locked --all-extras

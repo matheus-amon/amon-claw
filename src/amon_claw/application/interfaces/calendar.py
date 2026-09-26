@@ -9,7 +9,7 @@ class ICalendarAdapter(ABC):
         calendar_id: str,
         start_date: datetime,
         end_date: datetime,
-        duration_minutes: int
+        duration_minutes: int,
     ) -> list[datetime]:
         """Fetch available time slots for a given duration."""
         pass
@@ -21,7 +21,7 @@ class ICalendarAdapter(ABC):
         summary: str,
         description: str,
         start_time: datetime,
-        end_time: datetime
+        end_time: datetime,
     ) -> str:
         """Create an event and return the external event ID."""
         pass

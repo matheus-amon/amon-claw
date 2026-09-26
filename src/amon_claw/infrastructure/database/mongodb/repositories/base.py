@@ -1,4 +1,3 @@
-from typing import Generic, TypeVar
 from uuid import UUID
 
 from beanie import Document
@@ -6,14 +5,13 @@ from pydantic import BaseModel
 
 from amon_claw.application.interfaces.repositories.base import BaseRepository
 
-EntityT = TypeVar("EntityT", bound=BaseModel)
-DocumentT = TypeVar("DocumentT", bound=Document)
 
-class MongoRepository(BaseRepository[EntityT], Generic[EntityT, DocumentT]):
+class MongoRepository[EntityT: BaseModel, DocumentT: Document](BaseRepository[EntityT]):
     """
     Generic MongoDB repository implementation using Beanie.
     Handles mapping between domain entities (Pydantic models) and Beanie documents.
     """
+
     def __init__(self, document_model: type[DocumentT], entity_class: type[EntityT]):
         self.document_model = document_model
         self.entity_class = entity_class
@@ -26,7 +24,7 @@ class MongoRepository(BaseRepository[EntityT], Generic[EntityT, DocumentT]):
         # Ensure ID is present
         entity_id = getattr(entity, 'id', None)
         if not entity_id:
-             raise ValueError(f"Entity of type {type(entity)} must have an 'id' field.")
+            raise ValueError(f"Entity of type {type(entity)} must have an 'id' field.")
 
         # Try to find existing document to update, or create new
         doc = await self.document_model.get(entity_id)

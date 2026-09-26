@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock, patch
+
+import pytest
 
 from amon_claw.domain.entities.tenant import MessagingProvider, TenantMessagingConfig
 from amon_claw.infrastructure.llm.tools.messaging_client import (
@@ -45,6 +46,7 @@ async def test_twilio_client_send_message(twilio_config):
 
     with patch('httpx.AsyncClient.post', new_callable=AsyncMock) as mock_post:
         from unittest.mock import MagicMock
+
         mock_response = MagicMock()
         mock_response.status_code = 201
         mock_response.json.return_value = {'sid': 'SM123'}
@@ -66,6 +68,7 @@ async def test_evolution_client_send_message(evolution_config):
 
     with patch('httpx.AsyncClient.post', new_callable=AsyncMock) as mock_post:
         from unittest.mock import MagicMock
+
         mock_response = MagicMock()
         mock_response.status_code = 201
         mock_response.json.return_value = {'status': 'success'}
