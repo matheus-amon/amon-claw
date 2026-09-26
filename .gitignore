@@ -16,3 +16,11 @@ wheels/
 
 # Virtual environments
 .venv
+
+# AI tooling session state
+.superpowers/
+.gemini/
+
+# Coverage
+.coverage
+htmlcov/
