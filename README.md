@@ -1,5 +1,10 @@
 # Amon Claw
 
+[![CI](https://github.com/matheus-amon/amon-claw/actions/workflows/ci.yml/badge.svg)](https://github.com/matheus-amon/amon-claw/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/matheus-amon/amon-claw/graph/badge.svg)](https://codecov.io/gh/matheus-amon/amon-claw)
+[![Docs](https://img.shields.io/badge/docs-live-brightgreen)](https://matheus-amon.github.io/amon-claw/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A personal multi-agent system for automating the repetitive parts of my own
 workflow. The design goal is hyper-personalisation with **deterministic
 execution**: the code is hand-written, and LLMs are used only as a discussion
