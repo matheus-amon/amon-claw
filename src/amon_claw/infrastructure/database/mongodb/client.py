@@ -61,10 +61,11 @@ async def init_db() -> None:
     Deve ser chamada uma única vez, na inicialização da aplicação, antes de
     qualquer repositório ser utilizado.
     """
-    client = get_mongo_client()
     db = get_mongo_db()
     await init_beanie(database=db, document_models=__all_models__)
-    logger.info(f'Beanie inicializado no banco "{db.name}" com {len(__all_models__)} modelos.')
+    logger.info(
+        f'Beanie inicializado no banco "{db.name}" com {len(__all_models__)} modelos.'
+    )
 
 
 # Exemplo de uso (opcional, pode ser removido ou movido para testes)
