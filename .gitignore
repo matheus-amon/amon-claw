@@ -24,3 +24,6 @@ wheels/
 # Coverage
 .coverage
 htmlcov/
+
+# MkDocs build output (served from gh-pages branch)
+site/
