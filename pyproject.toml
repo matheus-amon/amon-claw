@@ -12,6 +12,12 @@ dependencies = [
     "google-api-python-client>=2.194.0",
     "google-auth>=2.49.2",
     "langgraph>=1.1.3",
+    # Pinned exactly. 0.0.11 is broken on langgraph 1.x: it reads
+    # StateGraph.schema, which no longer exists, so create_swarm raises
+    # AttributeError at graph-build time. 0.1.0 fixes it. This is a direct
+    # dependency on purpose -- 0.0.11 was only ever in the tree as a
+    # transitive, which is how it got that far unnoticed.
+    "langgraph-swarm==0.1.0",
     "langgraph-checkpoint-redis>=0.4.0",
     "langgraph-store-mongodb>=0.2.0",
     "loguru>=0.7.2", # Adicionado para logging

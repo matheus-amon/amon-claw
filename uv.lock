@@ -19,6 +19,7 @@ dependencies = [
     { name = "langgraph" },
     { name = "langgraph-checkpoint-redis" },
     { name = "langgraph-store-mongodb" },
+    { name = "langgraph-swarm" },
     { name = "loguru" },
     { name = "motor" },
     { name = "pydantic-ai-slim", extra = ["google", "openrouter"] },
@@ -47,6 +48,7 @@ requires-dist = [
     { name = "langgraph", specifier = ">=1.1.3" },
     { name = "langgraph-checkpoint-redis", specifier = ">=0.4.0" },
     { name = "langgraph-store-mongodb", specifier = ">=0.2.0" },
+    { name = "langgraph-swarm", specifier = "==0.1.0" },
     { name = "loguru", specifier = ">=0.7.2" },
     { name = "motor", specifier = ">=3.7.1" },
     { name = "pydantic-ai-slim", extras = ["google", "openrouter"], specifier = ">=1.70.0" },
@@ -1155,6 +1157,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b8/af/0c3d6f62bc8f214079bbd80b5827a783ed590e359cdf08769f038256ffaa/langgraph_store_mongodb-0.2.0.tar.gz", hash = "sha256:95787059ac2178f6a0ef9c2f60c4ecd6dfeb11e6ae1e137fb79b71cd1536777e", size = 103346, upload-time = "2026-01-15T18:12:55.38Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/83/39/914b1359fed53590f28c21a8a21de44061f30fdf3b08f4fa9e76d64715ac/langgraph_store_mongodb-0.2.0-py3-none-any.whl", hash = "sha256:d72d1ef32f75f3cc3fbae2c5cbdddd1756e5cf56e1756f8e61442b0bf186c4ac", size = 9318, upload-time = "2026-01-15T18:12:54.114Z" },
+]
+
+[[package]]
+name = "langgraph-swarm"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langchain" },
+    { name = "langchain-core" },
+    { name = "langgraph" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/89/9c/b76ce5eb38584097e671464632fdb854ab28457dd9e8ec3912f7208a1d9a/langgraph_swarm-0.1.0.tar.gz", hash = "sha256:e0f189fc2471d06108fc293da05771d0106d72f755cd130ee37d579561942479", size = 12432, upload-time = "2025-12-04T19:04:05.56Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/49/1f/a2fd04e6ba6f34609ae37a290b198f37155516ed67e34c12948c5a742437/langgraph_swarm-0.1.0-py3-none-any.whl", hash = "sha256:7020b9a1ba6959b8ddd0168e49b236e8f9967ea40a8a2ccd14c28ec57fe6c227", size = 10227, upload-time = "2025-12-04T19:04:04.72Z" },
 ]
 
 [[package]]
